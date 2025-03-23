@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Understanding Beech Leaf Disease</title>
+
+  <!-- Material Icons / Google Fonts -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Consolidated Styles -->
+  <style>
+    /* ------------------------------
+       Global Styles
+    ------------------------------ */
+    body {
+      margin: 0;
+      font-family: 'IBM Plex Sans', sans-serif;
+      background-color: #F5F4ED;
+      color: #1E2203;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    h2.sans.large.centered {
+      font-size: 2rem;
+      margin: 2rem 0 1rem;
+      text-align: center;
+    }
+    p.sans.condensed.centered {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 1rem auto;
+      text-align: center;
+    }
+    img.title-image {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* ------------------------------
+       Intro Section
+    ------------------------------ */
+    .intro-section {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom, #F5F4ED, #E9E7DE);
+      background-image: url('images/faint-leaf-pattern.jpg');
+      background-repeat: no-repeat;
+      background-position: center top;
+      background-size: cover;
+      background-blend-mode: lighten;
+      text-align: center;
+      position: relative;
+    }
+    .uvm-logo {
+      width: 640px;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+    .uvm-label {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2e2e2e;
+      margin-bottom: 2rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ------------------------------
+       Search Box
+    ------------------------------ */
+    .search-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 2px solid #B7A976;
+      padding: 1.5rem 2rem;
+      font-size: 2rem;
+      border-radius: 50px;
+      background-color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      max-width: 700px;
+      height: 80px;
+      box-sizing: border-box;
+      color: #1E2203;
+    }
+    .search-box .typing-text {
+      flex-grow: 1;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .search-box .material-icons {
+      margin-left: 10px;
+      transition: filter 0.3s ease-in-out;
+      color: #658352;
+      font-size: 2rem;
+    }
+    .typing-text::after {
+      content: '|';
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ------------------------------
+       Search Result
+    ------------------------------ */
+    .search-result {
+      margin-top: 1rem;
+      padding: 1rem 2rem;
+      background: #F5F4ED;
+      border-radius: 10px;
+      border: 2px solid #C9B9A2;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease-out;
+      color: #1E2203;
+      font-weight: 400;
+      font-size: 1rem;
+      text-shadow: none;
+    }
+    .search-result.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .search-result .material-icons {
+      vertical-align: middle;
+      margin-right: 10px;
+      color: #658352;
+    }
+
+    /* ------------------------------
+       Scroll Indicator
+    ------------------------------ */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 30px;
+      font-size: 1.4rem;
+      color: black;
+      opacity: 0;
+      animation: bounce 1.2s infinite ease-in-out;
+      transition: opacity 0.5s ease;
+    }
+    .scroll-indicator.visible {
+      opacity: 1;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .scroll-text {
+      font-size: 1.4rem;
+      transform: translateY(20px);
+    }
+
+    /* ------------------------------
+       Main Content
+    ------------------------------ */
+    .content {
+      padding: 4rem 2rem;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    /* Vertical Container / Fade-In */
+    .vertical-container {
+      text-align: center;
+      min-height: 100vh;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      padding-bottom: 2rem;
+    }
+    .vertical-container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-elem {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+      margin: 2rem 0;
+    }
+    .fade-elem.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .vertical-container h2 {
+      font-size: 2rem;
+      margin: 2rem 0 1rem;
+    }
+    .vertical-container p {
+      font-size: 1.1rem;
+      max-width: 700px;
+      margin: 1rem auto;
+    }
+
+    .section-divider {
+      font-size: 1.4rem;
+      margin: 4rem auto 2rem;
+      text-align: center;
+      color: #8a7a50;
+      position: relative;
+      white-space: nowrap;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: "";
+      display: inline-block;
+      width: 25%;
+      height: 1px;
+      background-color: #8a7a50;
+      vertical-align: middle;
+      margin: 0 1rem;
+    }
+
+    /* Minor image styling */
+    .beech-tree {
+      width: 40%;
+      border: 4px solid rgb(70, 40, 7);
+      border-radius: 5%;
+      margin: auto;
+      display: block;
+    }
+    .nematode {
+      border-radius: 5%;
+      border: 4px solid rgb(70,40,7);
+      margin: auto;
+      width: 30%;
+      display: block;
+    }
+    .bld-damage {
+      margin-top: 4em !important;
+      border-radius: 50%;
+      border: 4px solid rgb(70,40,7);
+      margin: auto;
+      width: 250px;
+      height: 200px;
+      display: block;
+    }
+    .symptoms {
+      border-radius: 1%;
+      border: 4px solid rgb(70,40,7);
+      margin: auto;
+      width: 75%;
+      display: block;
+    }
+    .dead-beech-branch {
+      margin-top: 2em !important;
+      border-radius: 40%;
+      border: 4px solid rgb(70,40,7);
+      margin: auto;
+      width: 40%;
+      display: block;
+    }
+    .beech-nutrients {
+      width: 80%;
+      margin-top: 4em !important;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Carousel / Wildlife icons */
+    #container {
+      position: relative;
+      width: 100%;
+      height: 200px; /* Adjust to fit your images */
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    #carousel {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      display: inline-flex;
+      margin: 0;
+      padding: 0;
+      left: 0;
+    }
+    #carousel img {
+      width: 150px; 
+      height: 150px;
+      border-radius: 50%;
+      border: 4px solid #654321;
+      margin: 0 10px;
+      box-sizing: border-box;
+    }
+
+    /* Sticky map container */
+    .stick {
+      position: -webkit-sticky; /* Safari support */
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+    }
+    .map-margin {
+      padding-top: 1em !important;
+    }
+
+    /* The triggers controlling our map transitions */
+    .trigger {
+      height: 100vh;
+    }
+
+    /* The map image */
+    .beech-map {
+      margin-top: 3em;
+      box-shadow: 0px 0px 5px 10px #888888;
+      width: 100%;
+      transition: opacity 0.5s ease;
+    }
+
+    /* "Upper Northeast has a lack of replacements" text -- default hidden */
+    #replacementNote {
+      max-width: 700px;
+      margin: 2rem auto;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    /* Social media icon circles */
+    .social-icons-container {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      color: #fff;
+      font-size: 24px;
+      text-decoration: none;
+    }
+    .facebook { background: #3b5998; }
+    .twitter  { background: #1da1f2; }
+    .instagram{ background: #e1306c; }
+    .linkedin { background: #0e76a8; }
+    .youtube  { background: #FF0000; }
+
+    /* Optional: Remove extra margin from "Areas at Risk" (since it's now part of sticky) */
+    .no-margin {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    #where-is-it-going {
+      margin-top: 300px;
+    }
+
+    .bld-time-map {
+      width: 100%;
+    }
+
+    .beech-map {
+      width: 90%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Intro Section -->
+  <section class="intro-section">
+    <!-- 1. UVM Logo -->
+    <img src="images/uvm-logo.png" alt="University of Vermont logo" class="uvm-logo">
+    <div class="uvm-label">PRESENTS</div>
+
+    <div class="search-box">
+      <span class="typing-text"></span>
+      <span class="material-icons search-icon">search</span>
+    </div>
+
+    <div class="search-result">
+      <span class="material-icons">search</span>
+      a visual data story by Daniel Scheuermann
+    </div>
+
+    <div class="scroll-indicator" id="scroll-indicator">
+      <p class="scroll-text">Scroll</p>
+      <p>&#x25BC;</p>
+    </div>
+  </section>
+
+  <div class="content">
+
+    <!-- SECTION: Background on American Beech -->
+    <section class="vertical-container content-section">
+      <div class="section-divider fade-elem">Meet the American Beech Tree</div>
+      <div class="fade-elem">
+        <img
+          class="beech-tree"
+          src="images/beech-tree.png"
+          alt="Full view of a mature American beech tree in forested setting"
+        >
+      </div>
+      <div class="fade-elem">
+        <h2 class="sans large centered">A Cornerstone of Eastern Forests</h2>
+        <p>
+          The American beech (<strong>Fagus grandifolia</strong>) is a towering hardwood native to eastern North America, renowned for its graceful form and smooth, silvery-gray bark. It often grows up to 80 feet tall and forms dense canopies that support diverse wildlife habitats. Its edible beechnuts are prized by animals like deer, squirrels, and birds, making it an essential part of temperate forest ecosystems.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 1: What is BLD -->
+    <section class="vertical-container content-section">
+      <div class="section-divider fade-elem">What is Beech Leaf Disease?</div>
+
+      <div class="fade-elem">
+        <h2>What is Beech Leaf Disease? Simply put, it's a small worm.</h2>
+        <p>
+          More specifically, it's something called a nematode—a microscopic worm known scientifically as <em>Litylenchus crenatae mccannii</em>. This tiny worm invades buds and leaves, feeding from the inside and disrupting normal growth.
+        </p>
+      </div>
+
+      <div class="fade-elem">
+        <img class="nematode" src="images/nematode.jpg" alt="Microscopic nematode image">
+      </div>
+
+      <div class="fade-elem">
+        <h2>But this tiny worm has dangerous effects on our environment.</h2>
+        <p>
+          Once inside, the nematode triggers severe leaf damage—dark striping, cupping, and thickening—eventually killing the leaves. Without healthy leaves, trees can't properly photosynthesize, leading to a slow decline.
+        </p>
+      </div>
+
+      <div class="fade-elem">
+        <img class="bld-damage" src="images/BLD-Damage.png" alt="Progression of BLD leaf damage, showing dark banding">
+      </div>
+    </section>
+
+    <!-- SECTION 2: Symptoms -->
+    <section class="vertical-container content-section">
+      <div class="section-divider fade-elem">Symptoms of BLD</div>
+
+      <div class="fade-elem">
+        <h2>When the disease infects a tree, you’ll see signs like dark banding, curling, and leathery leaves.</h2>
+        <p>
+          These symptoms indicate advanced nematode infestation. Affected leaves can wither, turn yellow, and drop prematurely, thinning the canopy. Young beech saplings often die within 2–5 years, while mature trees succumb within 7–10 years.
+        </p>
+      </div>
+
+      <div class="fade-elem">
+        <img class="symptoms" src="images/Stripe-curl-darken.png" alt="Beech leaves showing dark stripes and curling">
+      </div>
+
+      <div class="fade-elem">
+        <h2>Once you see these signs, the tree's days are numbered.</h2>
+        <p>
+          The disease spreads quickly. In severely infected regions, large stands of beech are dying off, altering the forest landscape in just a few seasons.
+        </p>
+      </div>
+
+      <div class="fade-elem">
+        <img class="dead-beech-branch" src="images/dead-beech-branch.jpg" alt="Dead beech branch with no leaves">
+      </div>
+    </section>
+
+    <!-- SECTION 2: The Cost -->
+    <section class="vertical-container content-section">
+      <div class="section-divider fade-elem">The Cost</div>
+
+      <div class="fade-elem">
+        <h2>The impact goes beyond losing a tree—it affects wildlife and our wallets.</h2>
+        <p>
+          Beech trees provide essential food sources for wildlife—bears, birds, rodents, deer, and turkeys all rely on beech nuts. Losing these trees can disrupt entire ecosystems. Economically, managing infested areas and removing dead trees can be expensive for landowners and communities.
+        </p>
+      </div>
+
+      <div id="container" class="fade-elem">
+        <div id="carousel">
+          <!-- 7. Deer -->
+          <img src="images/deer.png" alt="Deer silhouette">
+
+          <!-- 8. Blue Jay -->
+          <img src="images/blue-jay.jpg" alt="Blue Jay perched on a branch">
+
+          <!-- 9. Squirrel -->
+          <img src="images/squirrel.jpg" alt="Gray Squirrel in a forest">
+
+          <!-- 10. Opossum -->
+          <img src="images/opossum.jfif" alt="Opossum behind leaves">
+
+          <!-- 11. Beech Bug -->
+          <img src="images/beechbug.jfif" alt="A small bug near a beech trunk">
+
+          <!-- 12. Bear -->
+          <img src="images/bear.jfif" alt="Black Bear in forest undergrowth">
+        </div>
+      </div>
+
+      <div class="fade-elem">
+        <h2>Wildlife relies heavily on beech nuts.</h2>
+        <p>
+          Beech nuts contain high amounts of protein and fat, making them crucial for survival—particularly in regions with fewer oak trees. When beeches die off, animals lose a key food source, and local biodiversity suffers.
+        </p>
+      </div>
+
+      <div class="fade-elem">
+        <img class="beech-nutrients" src="images/Beech_Nut_Nutrients.png"
+        alt="Beech nut nutrient breakdown chart">
+        <figcaption>
+          Beech nut nutritional breakdown.
+          <br>(Source: <a href="https://www.eatthismuch.com/calories/beechnuts-2637" target="_blank">EatThisMuch</a>)
+        </figcaption>
+      </div>
+    </section>
+
+
+    <!-- SECTION 3 + MAP STICKY -->
+    <!-- Combine "Areas at Risk" with the sticky container so they appear/disappear together -->
+    <section class="stick content-section map-margin" id="maps">
+      <!-- Areas at Risk text -->
+      <div class="section-divider">Areas at Risk</div>
+
+
+      <!-- Headers that change as user scrolls triggers -->
+      <section class="text-content">
+        <h2 id="headtxt">In some areas, beech trees dominate. Losing them here would be catastrophic.</h2>
+        <p id="description">Regions where beech trees are the main source of nuts would face devastating impacts if beech leaf disease spreads further.
+        </p>
+      </section>
+
+      <!-- The map image -->
+      <img
+        id="bottom-image"
+        src="images/just-beech.png"
+        alt="Map showing where just beech is present in the forest"
+        class="beech-map"
+      >
+      <!-- Forest Tree Map figcaption (the “Map showing where just beech is present”) -->
+      <figcaption>
+        Forest map of beech distribution.
+        <br>(Source: <a href="https://usfs-lcms.github.io/lcms-viewer/treemap" target="_blank">USFS LCMS TreeMap Viewer</a>)
+      </figcaption>
+
+      <!-- "Upper Northeast" note hidden by default, will show at final trigger -->
+      <div id="replacementNote">
+        <h2></h2>
+        <p>
+        </p>
+      </div>
+    </section>
+
+    <!-- Scroll triggers for the sticky map (0, 1, 2, 3) -->
+    <section class="trigger" data-index="0"></section>
+    <section class="trigger" data-index="1"></section>
+    <section id="reshow" class="trigger" data-index="2"></section>
+    <section class="trigger four" data-index="3"></section>
+
+    <style>
+      .four {
+        height: 200px;
+      }
+    </style>
+
+
+    <!-- SECTION 4: Where is it Going? -->
+    <section style="padding-top:2em;" id="where-is-it-going" class="vertical-container content-section">
+      <div class="section-divider fade-elem">Where Is It Going?</div>
+
+      <div class="fade-elem">
+        <h2>It started small in Ohio in 2012, but it’s been spreading rapidly.</h2>
+        <p>
+          The spread is largely driven by natural factors—birds, insects, and wind—as well as human activities like moving infected plant material. Recent reports show it crossing state lines and even reaching into Canada.
+        </p>
+      </div>
+
+      <div class="fade-elem">
+        <img
+          class="bld-time-map"
+          src="images\bld-time-map.PNG"
+          alt="Time-series map showing spread of BLD from 2012 to present"
+        >
+        <figcaption>
+          Time-series map of BLD spread.
+          <br>(Source: <a href="https://www.dontmovefirewood.org/pest_pathogen/beech-leaf-disease/" target="_blank">
+            Don't Move Firewood
+          </a>)
+        </figcaption>
+      </div>
+
+      <div class="fade-elem">
+        <h2>Where is it heading next?</h2>
+        <p>
+          Modeling predicts it will continue moving northeast, potentially reaching major beech stands in New England and beyond. By 2030, significant portions of the Eastern US could be affected unless we intervene.
+        </p>
+      </div>
+    </section>
+
+    <!-- SECTION 5: How You Can Help -->
+    <section id="where-is-it-going" class="vertical-container content-section">
+      <div class="section-divider fade-elem">How You Can Help</div>
+
+      <div class="fade-elem">
+        <h2>Have you spotted signs of Beech Leaf Disease? Here's how to take action:</h2>
+        <p>
+          <strong>1) Share on Social Media</strong><br>
+          Raise awareness with friends, neighbors, and local communities.
+        </p>
+
+        <!-- 5 Social Icons -->
+        <div class="social-icons-container">
+          <a href="#" class="social-icon facebook" aria-label="Facebook">
+            <span class="material-icons">thumb_up</span>
+          </a>
+          <a href="#" class="social-icon twitter" aria-label="Twitter">
+            <span class="material-icons">chat</span>
+          </a>
+          <a href="#" class="social-icon instagram" aria-label="Instagram">
+            <span class="material-icons">camera_alt</span>
+          </a>
+          <a href="#" class="social-icon linkedin" aria-label="LinkedIn">
+            <span class="material-icons">work</span>
+          </a>
+          <a href="#" class="social-icon youtube" aria-label="YouTube">
+            <span class="material-icons">smart_display</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="fade-elem">
+        <h2>2) Report It</h2>
+        <p>
+          Early reporting is crucial. Use local state resources or community science apps like EDDMapS. Contact your state’s forestry department, or check online for “Report Beech Leaf Disease” pages.
+        </p>
+      </div>
+    </section>
+
+    <!-- Citations -->
+    <section id="where-is-it-going" class="vertical-container content-section">
+      <div class="section-divider fade-elem">Citations</div>
+      <div class="fade-elem">
+        <p><a href="https://www.dontmovefirewood.org/pest_pathogen/beech-leaf-disease/" target="_blank">Source for time-series map</a></p>
+        <p><a href="https://www.eatthismuch.com/calories/beechnuts-2637" target="_blank">Source for nutrient image</a></p>
+        <p><a href="https://usfs-lcms.github.io/lcms-viewer/treemap" target="_blank">Source for each forest map</a></p>
+        <p><a href="https://vtinvasives.org/invasive/beech-leaf-disease" target="_blank">VT Invasives - Beech Leaf Disease</a></p>
+        <p><a href="https://fpr.vermont.gov/news/beech-leaf-disease-expands-vermont#:~:text=What%20to%20look%20for%20and,Chittenden%2C%20Windham%2C%20and%20Windsor." target="_blank">VT FPR - Beech Leaf Disease Expands</a></p>
+        <p><a href="https://extension.psu.edu/guide-to-beech-leaf-disease-for-the-public" target="_blank">PSU Extension - Guide to Beech Leaf Disease</a></p>
+        <p><a href="https://www.invasivespeciescentre.ca/invasive-species/meet-the-species/invasive-pathogens/beech-leaf-disease/" target="_blank">Invasive Species Centre - Beech Leaf Disease</a></p>
+        <p><a href="https://www.eppo.int/ACTIVITIES/plant_quarantine/alert_list_nematodes/litylenchus_crenatae" target="_blank">EPPO - Litylenchus Crenatae</a></p>
+        <p><a href="https://www.frontiersin.org/journals/forests-and-global-change/articles/10.3389/ffgc.2023.1146742/full" target="_blank">Frontiers in Forests and Global Change Article</a></p>
+        <p><a href="https://www.arcgis.com/home/item.html?id=a09bee8d9a3f41b1bfc6bb714b345a99" target="_blank">ArcGIS Story Map</a></p>
+        <p><a href="https://www.invasivespeciescentre.ca/take-action/community-science-program/beech-leaf-disease-monitoring-network/" target="_blank">Community Science Program - BLD Monitoring Network</a></p>
+        <p><a href="https://www.gardeningknowhow.com/ornamental/trees/beech/beech-trees-in-landscapes.htm" target="_blank">Gardening Know How - Beech Trees in Landscapes</a></p>
+        <p><a href="https://www.sleloinvasives.org/protectors-activity-track-beech-leaf-disease/" target="_blank">SLELO Invasives - Track Beech Leaf Disease</a></p>
+        <p><a href="https://www.rsb.org.uk/biologist-features/this-is-a-worm-s-world" target="_blank">Royal Society of Biology - This is a Worm's World</a></p>
+        <p><a href="https://www.sciencefriday.com/articles/identify-beech-leaf-disease/" target="_blank">Science Friday - Identify Beech Leaf Disease</a></p>
+        <p><a href="https://www.pexels.com/search/" target="_blank">Pexels - Free Stock Photo Search</a></p>        
+      </div>
+    </section>
+  </div>
+
+  <!-- Map Visibility Script-->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // The map section we want to hide after user reaches "Where is it going?"
+      const mapMarginSection = document.querySelector('.map-margin');
+    
+      // The "Where is it going?" section (id="where-is-it-going")
+      const whereGoingSection = document.getElementById('where-is-it-going');
+    
+      const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+  
+      const observerCallback = (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Hide the map once "Where is it going?" is reached
+            mapMarginSection.style.opacity = '0';
+            mapMarginSection.style.pointerEvents = 'none';
+            mapMarginSection.classList.remove('stick');
+            // Notice: No 'else' to re-show it
+          }
+        });
+      };
+  
+      const observer = new IntersectionObserver(observerCallback, options);
+      observer.observe(whereGoingSection);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // The map section we want to hide after user reaches "Where is it going?"
+      const mapMarginSection = document.querySelector('.map-margin');
+    
+      // The "Where is it going?" section (id="where-is-it-going")
+      const reshow = document.getElementById('reshow');
+    
+      const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+  
+      const observerCallback = (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Hide the map once "Where is it going?" is reached
+            mapMarginSection.style.opacity = '1';
+            mapMarginSection.style.pointerEvents = 'none';
+            mapMarginSection.classList.add('stick');
+            // Notice: No 'else' to re-show it
+          }
+        });
+      };
+  
+      const observer = new IntersectionObserver(observerCallback, options);
+      observer.observe(reshow);
+    });
+  </script>
+  
+    
+
+  <!-- Carousel Script -->
+  <script>
+    const carousel = document.getElementById('carousel');
+    const container = document.getElementById('container');
+    let speed = 1;
+
+    function moveCarousel() {
+      carousel.style.left = (carousel.offsetLeft - speed) + 'px';
+
+      const firstImage = carousel.querySelector('img');
+      const containerRect = container.getBoundingClientRect();
+      const firstImageRect = firstImage.getBoundingClientRect();
+
+      if (firstImageRect.right < containerRect.left) {
+        carousel.appendChild(firstImage);
+        const imageTotalWidth = firstImage.offsetWidth + (2 * 10); 
+        carousel.style.left = (carousel.offsetLeft + imageTotalWidth) + 'px';
+      }
+      requestAnimationFrame(moveCarousel);
+    }
+    requestAnimationFrame(moveCarousel);
+  </script>
+
+  <!-- Sticky Map Script (Triggers) -->
+  <script>
+    const images = [
+      "images/just-beech.png", 
+      "images/all-nut-bearing.png", 
+      "images/no-beech.png", 
+      "images/no-beech.png"
+    ];
+    const headtxts = [
+      "Look closely at the Northeast. Beech trees are everywhere here.",
+      "But they're not alone. Other nut-bearing trees live here too.",
+      "Now imagine the Northeast without beech trees.",
+      "The Upper Northeast has a Lack of Replacements"
+    ];
+    const texts = [
+      "Beech trees thrive in this region, forming dense forests that sustain wildlife and maintain ecological balance.",
+      "This diverse group of trees creates a rich habitat, supporting many wildlife species across the Northeast.",
+      "Removing beech trees leaves significant gaps, stressing wildlife dependent on beech nuts and potentially destabilizing ecosystems.",
+      "You might notice the upper northeast looking rather barren—because it is! The American Beech is especially prominent here, so focusing resources on suitable nut-bearing tree replacements is crucial to support local wildlife."
+    ];
+
+    const headtxt   = document.getElementById("headtxt");
+    const description = document.getElementById("description");
+    const bottomImage   = document.getElementById("bottom-image");
+    const replacementNote = document.getElementById("replacementNote");
+
+    // Start hidden
+    bottomImage.style.opacity = 0;
+    replacementNote.style.opacity = 0;
+
+    const triggers = document.querySelectorAll("section.trigger");
+
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.6
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const index = parseInt(entry.target.dataset.index, 10);
+          headtxt.textContent = headtxts[index] || "";
+          description.textContent = texts[index] || "";
+
+          // Update the map image
+          bottomImage.src = images[index] || "";
+
+          // If final map (index=3), show map + note
+          if (index === 3) {
+            bottomImage.style.opacity = 1;
+            replacementNote.style.opacity = 1;
+          } else {
+            bottomImage.style.opacity = 1;
+            replacementNote.style.opacity = 0; 
+          }
+        }
+      });
+    }, observerOptions);
+
+    triggers.forEach((trigger) => observer.observe(trigger));
+  </script>
+
+  <!-- Fade-In Script for Vertical Containers & fade-elems -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const sections = document.querySelectorAll(".vertical-container");
+
+      function handleScroll() {
+        const scrollPos = window.scrollY + window.innerHeight / 2;
+
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+
+          // How far we are through this section (0 to 1)
+          let progress = (scrollPos - sectionTop) / (sectionHeight / 2);
+          progress = Math.max(0, Math.min(1, progress));
+
+          // Reveal the section itself
+          if (progress > 0.1) {
+            section.classList.add("visible");
+          }
+
+          // Fade in items inside
+          const fadeItems = section.querySelectorAll(".fade-elem");
+          fadeItems.forEach((item, index) => {
+            const revealPoint = (index + 1) / (fadeItems.length + 1);
+            if (progress >= revealPoint) {
+              item.classList.add("show");
+            }
+          });
+        });
+      }
+
+      window.addEventListener("scroll", handleScroll);
+      handleScroll();
+    });
+  </script>
+
+  <!-- Typing Text & Search Result Script -->
+  <script>
+    const typingText = document.querySelector('.typing-text');
+    const searchIcon = document.querySelector('.search-icon');
+    const resultBox = document.querySelector('.search-result');
+    const scrollIndicator = document.getElementById('scroll-indicator');
+
+    const text = "what is the beech leaf disease?";
+    let idx = 0;
+
+    function type() {
+      if (idx < text.length) {
+        typingText.textContent += text.charAt(idx);
+        idx++;
+        setTimeout(type, 100);
+      } else {
+        setTimeout(() => {
+          searchIcon.style.filter = 'brightness(0.5)';
+          setTimeout(() => {
+            searchIcon.style.filter = 'brightness(1)';
+            resultBox.classList.add('visible');
+            setTimeout(() => {
+              scrollIndicator.classList.add('visible');
+            }, 1500);
+          }, 300);
+        }, 500);
+      }
+    }
+
+    window.addEventListener('load', () => {
+      setTimeout(type, 500);
+    });
+  </script>
+
+</body>
+</html>
