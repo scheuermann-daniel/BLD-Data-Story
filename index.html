@@ -13,6 +13,8 @@
     /* ------------------------------
        Global Styles
     ------------------------------ */
+    
+
     body {
       margin: 0;
       font-family: 'IBM Plex Sans', sans-serif;
@@ -23,7 +25,9 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
+      overflow-x: hidden !important;
     }
+
     h2.sans.large.centered {
       font-size: 2rem;
       margin: 2rem 0 1rem;
@@ -171,9 +175,10 @@
        Main Content
     ------------------------------ */
     .content {
-      padding: 4rem 2rem;
+      padding: 4rem 0rem;
       max-width: 800px;
-      width: 100%;
+      width: 90%;
+      margin: auto;
     }
 
     /* Vertical Container / Fade-In */
@@ -279,11 +284,14 @@
     /* Carousel / Wildlife icons */
     #container {
       position: relative;
+      margin: auto;
       width: 100%;
       height: 200px; /* Adjust to fit your images */
       overflow: hidden;
       white-space: nowrap;
+      overflow-x: hidden;
     }
+
     #carousel {
       position: absolute;
       top: 50%;
@@ -293,6 +301,7 @@
       padding: 0;
       left: 0;
     }
+
     #carousel img {
       width: 150px; 
       height: 150px;
@@ -322,7 +331,7 @@
     .beech-map {
       margin-top: 3em;
       box-shadow: 0px 0px 5px 10px #888888;
-      width: 100%;
+      width: 80%;
       transition: opacity 0.5s ease;
     }
 
@@ -375,6 +384,140 @@
     .beech-map {
       width: 90%;
     }
+
+    /* ------------------------------
+   Responsive Styles
+------------------------------ */
+@media (max-width: 1024px) {
+  .uvm-logo {
+    width: 480px;
+  }
+  .search-box {
+    font-size: 1.4rem;
+    padding: 1rem 0rem;
+    height: 70px;
+  }
+  .scroll-indicator {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  h2.sans.large.centered,
+  .vertical-container h2 {
+    font-size: 1.6rem;
+  }
+
+  p.sans.condensed.centered,
+  .vertical-container p,
+  .section-divider {
+    font-size: 1rem;
+  }
+
+  .uvm-logo {
+    width: 480px;
+  }
+
+  .uvm-label {
+    font-size: 1.5rem;
+  }
+
+  .search-box {
+    width: 90%;
+    font-size: 2rem;
+    height: auto;
+    padding: 1rem 0rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  };
+
+  .search-box .typing-text {
+    text-align: center;
+  }
+
+  .beech-tree,
+  .dead-beech-branch {
+    width: 80%;
+  }
+
+  .nematode {
+    width: 60%;
+  }
+
+  .bld-damage {
+    width: 200px;
+    height: 160px;
+  }
+
+  .symptoms {
+    width: 90%;
+  }
+
+  .search-result {
+    width: 50% !important;
+    font-size: 1em;
+  }
+
+  .beech-nutrients {
+    width: 95%;
+  }
+
+  #carousel img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .scroll-text {
+    font-size: 1rem;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .text-content {
+    max-width: 95%;
+    margin: auto;
+  }
+
+  .uvm-logo {
+    width: 320px;
+  }
+
+  .search-box {
+    padding: 0.75rem 0rem;
+    font-size: 1.3rem;
+    border-radius: 30px;
+  }
+
+  .material-icons {
+    font-size: 1.5rem;
+  }
+
+  .vertical-container {
+    padding: 2rem 0rem;
+  }
+
+  .content {
+    padding: 2rem 0rem;
+  }
+
+  .section-divider::before,
+  .section-divider::after {
+    width: 15%;
+    margin: 0 0.5rem;
+  }
+
+  .map-margin {
+    padding-top: 0.1em !important;
+  }
+  
+  .beech-map {
+    width: 80%;
+    margin: 0.2em 0 !important;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -392,7 +535,7 @@
 
     <div class="search-result">
       <span class="material-icons">search</span>
-      a visual data story by Daniel Scheuermann
+      A visual data story by Daniel Scheuermann
     </div>
 
     <div class="scroll-indicator" id="scroll-indicator">
