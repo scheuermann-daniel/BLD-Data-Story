@@ -311,13 +311,6 @@
       box-sizing: border-box;
     }
 
-    /* Sticky map container */
-    .stick {
-      position: -webkit-sticky; /* Safari support */
-      position: sticky;
-      top: 0;
-      z-index: 9999;
-    }
     .map-margin {
       padding-top: 1em !important;
     }
@@ -670,51 +663,49 @@
 
 
     <!-- SECTION 3 + MAP STICKY -->
-    <!-- Combine "Areas at Risk" with the sticky container so they appear/disappear together -->
-    <section class="stick content-section map-margin" id="maps">
-      <!-- Areas at Risk text -->
-      <div class="section-divider">Areas at Risk</div>
+    
 
+    <!---- AREAS AT RISK (now just scrolls) ---->
+<section class="content-section map-margin">
+  <div class="section-divider">Areas at Risk</div>
 
-      <!-- Headers that change as user scrolls triggers -->
-      <section class="text-content">
-        <h2 id="headtxt">In some areas, beech trees dominate. Losing them here would be catastrophic.</h2>
-        <p id="description">Regions where beech trees are the main source of nuts would face devastating impacts if beech leaf disease spreads further.
-        </p>
-      </section>
+  <h2>Look closely at the Northeast. Beech trees are everywhere here.</h2>
+  <p>Beech trees thrive in this region …</p>
 
-      <!-- The map image -->
-      <img
-        id="bottom-image"
-        src="images/beech.jpg"
-        alt="Map showing where just beech is present in the forest"
-        class="beech-map"
-      >
-      <!-- Forest Tree Map figcaption (the “Map showing where just beech is present”) -->
-      <figcaption>
-        Forest map of beech distribution.
-        <br>(Source: <a href="https://usfs-lcms.github.io/lcms-viewer/treemap" target="_blank">USFS LCMS TreeMap Viewer</a>)
-      </figcaption>
+  <img class="beech-map" src="images/beech.jpg"
+       alt="Map showing where just beech is present in the forest">
+  <figcaption>Forest map of beech distribution.<br>
+    (Source: USFS LCMS TreeMap Viewer)
+  </figcaption>
+</section>
 
-      <!-- "Upper Northeast" note hidden by default, will show at final trigger -->
-      <div id="replacementNote">
-        <h2></h2>
-        <p>
-        </p>
-      </div>
-    </section>
+<section class="content-section map-margin">
+  <h2>But they're not alone. Other nut-bearing trees live here too.</h2>
+  <p>This diverse group of trees creates a rich habitat …</p>
 
-    <!-- Scroll triggers for the sticky map (0, 1, 2, 3) -->
-    <section class="trigger" data-index="0"></section>
-    <section class="trigger" data-index="1"></section>
-    <section id="reshow" class="trigger" data-index="2"></section>
-    <section class="trigger four" data-index="3"></section>
+  <img class="beech-map" src="images/all.jpg"
+       alt="Map showing all nut-bearing trees in the forest">
+  <figcaption>Nut-bearing tree distribution.</figcaption>
+</section>
 
-    <style>
-      .four {
-        height: 200px;
-      }
-    </style>
+<section class="content-section map-margin">
+  <h2>Now imagine the Northeast without beech trees.</h2>
+  <p>Removing beech trees leaves significant gaps …</p>
+
+  <img class="beech-map" src="images/non-beech.jpg"
+       alt="Map with beech removed">
+  <figcaption>Forest without beech distribution.</figcaption>
+</section>
+
+<section class="content-section map-margin">
+  <h2>The Upper Northeast has a Lack of Replacements</h2>
+  <p>You might notice the upper northeast looking rather barren …</p>
+
+  <img class="beech-map" src="images/non-beech.jpg"
+       alt="Upper Northeast lacking replacements">
+  <figcaption>Replacement-candidate scarcity map.</figcaption>
+</section>
+
 
 
     <!-- SECTION 4: Where is it Going? -->
@@ -813,69 +804,6 @@
       </div>
     </section>
   </div>
-
-  <!-- Map Visibility Script-->
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // The map section we want to hide after user reaches "Where is it going?"
-      const mapMarginSection = document.querySelector('.map-margin');
-    
-      // The "Where is it going?" section (id="where-is-it-going")
-      const whereGoingSection = document.getElementById('where-is-it-going');
-    
-      const options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      };
-  
-      const observerCallback = (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            // Hide the map once "Where is it going?" is reached
-            mapMarginSection.style.opacity = '0';
-            mapMarginSection.style.pointerEvents = 'none';
-            mapMarginSection.classList.remove('stick');
-            // Notice: No 'else' to re-show it
-          }
-        });
-      };
-  
-      const observer = new IntersectionObserver(observerCallback, options);
-      observer.observe(whereGoingSection);
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-      // The map section we want to hide after user reaches "Where is it going?"
-      const mapMarginSection = document.querySelector('.map-margin');
-    
-      // The "Where is it going?" section (id="where-is-it-going")
-      const reshow = document.getElementById('reshow');
-    
-      const options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      };
-  
-      const observerCallback = (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            // Hide the map once "Where is it going?" is reached
-            mapMarginSection.style.opacity = '1';
-            mapMarginSection.style.pointerEvents = 'none';
-            mapMarginSection.classList.add('stick');
-            // Notice: No 'else' to re-show it
-          }
-        });
-      };
-  
-      const observer = new IntersectionObserver(observerCallback, options);
-      observer.observe(reshow);
-    });
-  </script>
-  
-    
 
   <!-- Carousel Script -->
   <script>
